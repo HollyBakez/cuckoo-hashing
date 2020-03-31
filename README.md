@@ -3,6 +3,6 @@ Cuckoo hashing with 41
 
 Group members:
 
-Ada Lovelace adalovelace@csu.fullerton.edu
+Holland Ho ho.holland1999@csu.fullerton.edu
 
-Charles Babbage charlesbab@csu.fullerton.edu
+James Talavera jwolfw@csu.fullerton.edu
