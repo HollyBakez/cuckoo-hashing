@@ -55,9 +55,7 @@ int main() {
   while ( getline(infile,s) ) {
     // place null character at the end of the line instead of <return>
     len = s.size();
-    // changed from s[len-1]='\0'  to s[len] = '\0' to fix missing char
-    // in output
-    s[len]='\0'; // you may need to change this line to s[len-1]='\0'
+    s[len-1]='\0'; // you may need to change this line to s[len-1]='\0'
 
 
     // insert the string in the cuckoo table
@@ -171,7 +169,7 @@ size_t f(string s, size_t index) {
     val = s[0]; // val = the first character in the string
     
     cout << "\n THIS IS VAL: " << val << "\n"; // test case 
-    
+
     val = val % tablesize; // first character 
 
     cout << "\n THIS IS VAL AFTER MODULO: " << val << "\n"; // test case
