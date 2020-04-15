@@ -142,24 +142,24 @@ size_t f(string s, size_t index) {
   len = s.size(); // length the size of the string inputted
 
   if (index == 0) { // inserting in T1
-    val = s[0]; // val = the first character in the string
+    val = s[0]; // val = key[0]
     val = val % tablesize; // first character
     if (val < 0) val += tablesize; // value increases
 
-    if (len == 1) // if the string is only 2 characters return the value
+    if (len == 1) 
       return val;
 
     for (i = 1; i < len; i++)
     {
       temp = s[i]; // Key[i]
       po *= prime; // 41 ^ i
-      po = po % tablesize; // 1 % 17 = 1
+      po = po % tablesize; // to make sure it doesn't exceed tablesize of 17
 
       if (po < 0) po += tablesize;
 
-      val += temp * po; // 41^i * key[i]
-      val = val % tablesize; //  f1 = val % val % tablesize
-      if (val < 0) val += tablesize; // if f1 ...
+      val += temp * po; // summation of val =  key[i] * 41^i
+      val = val % tablesize; //  f1 = val % tablesize
+      if (val < 0) val += tablesize; // if f1 < 0 then f1 = f1 + tablesize
 
     }
     return val;
@@ -167,29 +167,31 @@ size_t f(string s, size_t index) {
   else { // inserting in T2
     // TO DO: YOU NEED TO IMPLEMENT THE STEPS TO CALCULATE THE SECOND
     // HASH FUNCTION in <val>
-    val = s[len-1]; // val = the first character in the string or key of keysize-1
+    val = s[len-1]; // val = key of keysize - 1 
 
-    val = val % tablesize; // first character
+    val = val % tablesize; // f2 = val % tablesize
 
-    if (val < 0) val += tablesize; // value increases
+    if (val < 0) val += tablesize; // if f2 < 0 then f2 = f2 + tablesize
 
-    if (len == 1) // if the string is only 2 characters return the value
+    if (len == 1) 
       return val;
 
     for (i = 1; i < len; i++)
     {
       temp = s[len-i-1]; // Key[keysize - i - 1]
+
+      // Same as f1 
       po *= prime; // 41^i
       po = po % tablesize; //   f2 = val % tablesize 
       if (po < 0) po += tablesize;
 
-      val += temp * po; // summation of val
+      val += temp * po; // summation of val = key[keyysize-i-1] * 41^i
 
-      val = val % tablesize; // this is fine
+      val = val % tablesize; // f2 = val % tablesize
 
-      if (val < 0) val += tablesize; // this is fine
+      if (val < 0) val += tablesize; // if f2<0 then f2 = f2 + tablesize
+
     }
-
 
     return val;
  }
