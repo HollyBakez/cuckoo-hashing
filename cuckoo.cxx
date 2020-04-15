@@ -55,7 +55,10 @@ int main() {
   while ( getline(infile,s) ) {
     // place null character at the end of the line instead of <return>
     len = s.size();
-    s[len-1]='\0'; // you may need to change this line to s[len-1]='\0'
+
+    // --TO HOLLAND-- MAKE SURE TO CHANGE line 60 back to s[len-1] from s[len] when you done BOI
+     s[len-1]='\0';
+    //s[len]='\0'; // you may need to change this line to s[len-1]='\0'
 
 
     // insert the string in the cuckoo table
@@ -113,16 +116,14 @@ bool place_in_hash_tables (string s) {
 
       // NOW temp_s CONTAINING THE EVICTED STRING NEEDS TO BE STORED
       // IN THE OTHER TABLE
-  
+
       // WRITE THE CODE TO SET index TO INDICATE THE OTHER TABLE
       // index = 1 to indicate Table 2
       //index = 1;
       index = index?0:1;
       // WRITE THE CODE TO CALCULATE IN pos THE HASH VALUE FOR temp_s
 
-      // test case
-      // cout << "\n TESTING THIS: " << temp;
-      temp_s = temp; // will remove later, check with professor first
+      temp_s = temp;
       pos = f(temp_s, index);
       counter ++;
     }
@@ -138,63 +139,56 @@ size_t f(string s, size_t index) {
   int i, val=0, temp; // iterator index, value, and a temp holder
   po = 1; // position starting at 1
 
-  len = s.size(); // length the size of the string inputted 
+  len = s.size(); // length the size of the string inputted
 
-  if (index == 0) { // inserting in T1 
+  if (index == 0) { // inserting in T1
     val = s[0]; // val = the first character in the string
-    val = val % tablesize; // first character 
+    val = val % tablesize; // first character
     if (val < 0) val += tablesize; // value increases
 
     if (len == 1) // if the string is only 2 characters return the value
       return val;
 
-    for (i = 1; i < len; i++) 
+    for (i = 1; i < len; i++)
     {
       temp = s[i]; // Key[i]
-      po *= prime; // 41 ^ i 
+      po *= prime; // 41 ^ i
+      po = po % tablesize; // 1 % 17 = 1
 
-      po = po % tablesize; // 1 % 17 = 1 
-      if (po < 0) po += tablesize; // 
+      if (po < 0) po += tablesize;
 
       val += temp * po; // 41^i * key[i]
       val = val % tablesize; //  f1 = val % val % tablesize
+      if (val < 0) val += tablesize; // if f1 ...
 
-      if (val < 0) val += tablesize; // if f1 ... 
     }
     return val;
 }
-  else { // inserting in T2 
+  else { // inserting in T2
     // TO DO: YOU NEED TO IMPLEMENT THE STEPS TO CALCULATE THE SECOND
     // HASH FUNCTION in <val>
-    val = s[0]; // val = the first character in the string
-    
-    cout << "\n THIS IS VAL: " << val << "\n"; // test case 
+    val = s[len-1]; // val = the first character in the string or key of keysize-1
 
-    val = val % tablesize; // first character 
+    val = val % tablesize; // first character
 
-    cout << "\n THIS IS VAL AFTER MODULO: " << val << "\n"; // test case
     if (val < 0) val += tablesize; // value increases
 
     if (len == 1) // if the string is only 2 characters return the value
       return val;
 
-    cout << "\n THIS STRING: "<< s << "\n"; // debug test case 
-
-    for (i = 1; i < len; i++) 
+    for (i = 1; i < len; i++)
     {
-      temp = s[i]; // Key[i]
-      po = (po-1) * prime; // 41^ keysize - i
-
-      po = po % tablesize;
+      temp = s[len-i-1]; // Key[keysize - i - 1]
+      po *= prime; // 41^i
+      po = po % tablesize; //   f2 = val % tablesize 
       if (po < 0) po += tablesize;
 
-      val += temp * po;
+      val += temp * po; // summation of val
 
       val = val % tablesize; // this is fine
-      
+
       if (val < 0) val += tablesize; // this is fine
     }
-
 
 
     return val;
