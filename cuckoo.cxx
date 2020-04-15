@@ -56,10 +56,7 @@ int main() {
     // place null character at the end of the line instead of <return>
     len = s.size();
 
-    // --TO HOLLAND-- MAKE SURE TO CHANGE line 60 back to s[len-1] from s[len] when you done BOI
-     s[len-1]='\0';
-    //s[len]='\0'; // you may need to change this line to s[len-1]='\0'
-
+     s[len-1]='\0'; // you may need to change this line to s[len-1]='\0'
 
     // insert the string in the cuckoo table
     placed = place_in_hash_tables(s);
@@ -120,11 +117,11 @@ bool place_in_hash_tables (string s) {
       // WRITE THE CODE TO SET index TO INDICATE THE OTHER TABLE
       // index = 1 to indicate Table 2
       //index = 1;
-      index = index?0:1;
+      index = index?0:1; // to change to Table 2
       // WRITE THE CODE TO CALCULATE IN pos THE HASH VALUE FOR temp_s
 
-      temp_s = temp;
-      pos = f(temp_s, index);
+      temp_s = temp; // set the new string to get the hash value computed
+      pos = f(temp_s, index); // call the function to calculate the hash
       counter ++;
     }
   }
@@ -136,20 +133,21 @@ bool place_in_hash_tables (string s) {
 // TO DO: complete the ELSE brach
 size_t f(string s, size_t index) {
   size_t po, len; // position & length
-  int i, val=0, temp; // iterator index, value, and a temp holder
+  int i, val=0, temp; // iterator index, value, and a temp val of key[i] index
   po = 1; // position starting at 1
 
   len = s.size(); // length the size of the string inputted
 
   if (index == 0) { // inserting in T1
+    // calculates the first Value 41^0 * key[0]
     val = s[0]; // val = key[0]
-    val = val % tablesize; // first character
-    if (val < 0) val += tablesize; // value increases
+    val = val % tablesize; // f1 = val % tablesize
+    if (val < 0) val += tablesize; // if f1 < 0 then f1 = f1 + tablesize
 
     if (len == 1) 
       return val;
 
-    for (i = 1; i < len; i++)
+    for (i = 1; i < len; i++) // i=0 summation keysize-1
     {
       temp = s[i]; // Key[i]
       po *= prime; // 41 ^ i
@@ -167,6 +165,8 @@ size_t f(string s, size_t index) {
   else { // inserting in T2
     // TO DO: YOU NEED TO IMPLEMENT THE STEPS TO CALCULATE THE SECOND
     // HASH FUNCTION in <val>
+
+    // calulates the first Value key[keysize-1]
     val = s[len-1]; // val = key of keysize - 1 
 
     val = val % tablesize; // f2 = val % tablesize
@@ -175,24 +175,21 @@ size_t f(string s, size_t index) {
 
     if (len == 1) 
       return val;
-
-    for (i = 1; i < len; i++)
+    
+    for (i = 1; i < len; i++) // i = 0 summation keysize-1
     {
       temp = s[len-i-1]; // Key[keysize - i - 1]
-
       // Same as f1 
       po *= prime; // 41^i
       po = po % tablesize; //   f2 = val % tablesize 
+
       if (po < 0) po += tablesize;
 
       val += temp * po; // summation of val = key[keyysize-i-1] * 41^i
-
       val = val % tablesize; // f2 = val % tablesize
-
       if (val < 0) val += tablesize; // if f2<0 then f2 = f2 + tablesize
 
     }
-
     return val;
  }
 }
